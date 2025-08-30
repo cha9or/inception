@@ -1,0 +1,24 @@
+services:
+  mariadb:
+    container_name: mariadb
+    init: true
+    restart: always
+    env_file: requirements/mariadb/.env
+    build: requirements/mariadb
+    volumes: 
+      - mariadb:/var/lib/mysql
+    networks: 
+      - docker-network
+
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/data/mariadb
+
+networks:
+  docker-network:
+    name: docker-network
+    driver: bridge
