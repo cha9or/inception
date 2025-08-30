@@ -2,11 +2,24 @@
 set -e
 
 if [ ! -e /etc/.firstrun ]; then
-    sed -i "s/listen = 127.0.0.1/listen = 9000/g" /etc/php82/php-fpm.d/www.conf
+    sed -i "s/listen = 127.0.0.1/listen = 9000/g" /etc/php*/php-fpm.d/www.conf
     touch /etc/.firstrun
 fi
 
 if [ ! -e /etc/.firstmount ]; then
+
+    if [ -f /run/secrets/db_password ]; then
+        export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+    fi
+
+    if [ -f /run/secrets/wp_password ]; then
+        export WORDPRESS_PASSWORD=$(cat /run/secrets/wp_password)
+    fi
+
+    if [ -f /run/secrets/wp_admin_password ]; then
+        export WORDPRESS_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+    fi
+
     # wait for db
     sleep 5
     
@@ -48,4 +61,4 @@ if [ ! -e /etc/.firstmount ]; then
     touch /etc/.firstmount
 fi
 
-exec php-fpm82 -F
+exec php-fpm -F

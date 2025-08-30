@@ -2,12 +2,21 @@
 set -e
 
 if [ ! -d /etc/.firstrun ]; then
+
+    if [ -f /run/secrets/db_root_password ]; then
+        export MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+    fi
+
+    if [ -f /run/secrets/db_password ]; then
+        export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+    fi
+
     # init db
     mariadbd-safe --initialize --datadir=/var/lib/mysql --user=mysql --skip-test-db  >/dev/null 2>/dev/null
     # start db server
     mariadbd-safe --datadir=/var/lib/mysql --user=mysql &
     # wait for db to start
-    mariadb-admin -u root ping --silent --wait 30 >/dev/null 2>/dev/null
+    mariadb-admin -u root ping --silent --wait 15 >/dev/null 2>/dev/null
 
     # create database
     mariadb-safe -u root -e "

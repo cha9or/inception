@@ -1,0 +1,7 @@
+DOCKER_COMPOSE = srcs/docker-compose.yml
+
+up:
+	docker compose -f $(DOCKER_COMPOSE) up --build -d
+
+down:
+	docker compose -f $(DOCKER_COMPOSE) down
