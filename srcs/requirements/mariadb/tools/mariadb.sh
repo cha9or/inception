@@ -7,7 +7,7 @@ if [ ! -d /etc/.firstrun ]; then
     # start db server
     mariadbd-safe --datadir=/var/lib/mysql --user=mysql &
     # wait for db to start
-    mariadb-admin -u root ping --silent --wait=30 >/dev/null 2>/dev/null
+    mariadb-admin -u root ping --silent --wait 30 >/dev/null 2>/dev/null
 
     # create database
     mariadb-safe -u root -e "
