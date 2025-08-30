@@ -2,21 +2,24 @@
 
 if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
     # init db
-    mysql_install_db --datadir=/var/lib/mysql --user=mysql --skip-test-db  >/dev/null 2>/dev/null
+    mariadbd-safe --initialize --datadir=/var/lib/mysql --user=mysql --skip-test-db  >/dev/null 2>/dev/null
     # start db server
-    mysqld_safe --datadir=/var/lib/mysql --user=mysql &
+    mariadbd-safe --datadir=/var/lib/mysql --user=mysql &
     # wait for db to start
-    mysqladmin -u root ping --silent --wait=30 >/dev/null 2>/dev/null
+    mariadb-admin -u root ping --silent --wait=30 >/dev/null 2>/dev/null
 
     # create database
-    echo "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;" | mysql -u root
-    echo "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';" | mysql -u root
-    echo "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%';" | mysql -u root
-    echo "FLUSH PRIVILEGES;" | mysql
+    echo "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;" | mariadb -u root
+    echo "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';" | mariadb -u root
+    echo "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%';" | mariadb -u root
+    echo "FLUSH PRIVILEGES;" | mariadb -u root
+
+    # change root password
+    mariadb-admin -u root password "${MYSQL_ROOT_PASSWORD}"
 
     #shutdown server
-    mysqladmin -u root shutdown
+    mariadb-admin -u root -p "${MYSQL_ROOT_PASSWORD}" shutdown
     
 fi
 
-exec mysqld_safe  --datadir=/var/lib/mysql --user=mysql
+exec mariadb-safe  --datadir=/var/lib/mysql --user=mysql
