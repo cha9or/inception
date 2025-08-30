@@ -1,3 +1,16 @@
+#!bin/bash
+set -e
+
+if [ ! -e /etc/.firstrun ]; then
+# generate ssl cetificate
+openssl req -x509 -nodes -days 365 -newkey rsa:2048  \
+        -keyout /etc/nginx/ssl/nginx.key \
+        -out /etc/nginx/ssl/nginx.crt \
+        -subj "/CN=${DOMAIN_NAME}" \
+        >/dev/null 2>/dev/null
+
+# copy nginx config
+cat << EOF >> /etc/nginx/http.d/default.conf
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
@@ -24,3 +37,8 @@ server {
         include fastcgi_params; 
     }
 }
+EOF
+    touch /etc/.firstrun
+fi
+
+exec nginx -g 'daemon off;'

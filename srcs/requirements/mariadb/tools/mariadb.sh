@@ -1,6 +1,7 @@
 #!/bin/bash
+set -e
 
-if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
+if [ ! -d /etc/.firstrun ]; then
     # init db
     mariadbd-safe --initialize --datadir=/var/lib/mysql --user=mysql --skip-test-db  >/dev/null 2>/dev/null
     # start db server
@@ -9,10 +10,11 @@ if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
     mariadb-admin -u root ping --silent --wait=30 >/dev/null 2>/dev/null
 
     # create database
-    echo "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;" | mariadb -u root
-    echo "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';" | mariadb -u root
-    echo "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%';" | mariadb -u root
-    echo "FLUSH PRIVILEGES;" | mariadb -u root
+    mariadb-safe -u root -e "
+    CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
+    CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+    GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%';
+    FLUSH PRIVILEGES;"
 
     # change root password
     mariadb-admin -u root password "${MYSQL_ROOT_PASSWORD}"
@@ -20,6 +22,7 @@ if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
     #shutdown server
     mariadb-admin -u root -p "${MYSQL_ROOT_PASSWORD}" shutdown
     
+    touch /etc/.firstrun
 fi
 
 exec mariadb-safe  --datadir=/var/lib/mysql --user=mysql
