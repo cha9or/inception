@@ -1,8 +1,8 @@
-FROM alpine:3.21
+FROM debian:bookworm
 
-RUN apk update && apk add --no-cache nginx openssl bash
+RUN apt -qqy update && apt -qqy upgrade && apt -qqy install openssl nginx
 
-RUN mkdir -p /etc/nginx/ssl
+COPY conf/nginx.conf /etc/nginx/sites-available/default
 
 COPY --chmod=755 tools/nginx.sh /usr/local/bin/
 
