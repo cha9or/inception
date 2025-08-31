@@ -11,18 +11,10 @@ fi
 
 if [ ! -e /etc/.firstmount ]; then
 
-    if [ -f /run/secrets/db_password ]; then
-        export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
-    fi
+    if [ -f /run/secrets/db_password ] && export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+    if [ -f /run/secrets/wp_password ] && export WORDPRESS_PASSWORD=$(cat /run/secrets/wp_password)
+    if [ -f /run/secrets/wp_admin_password ] && export WORDPRESS_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
 
-    if [ -f /run/secrets/wp_password ]; then
-        export WORDPRESS_PASSWORD=$(cat /run/secrets/wp_password)
-    fi
-
-    if [ -f /run/secrets/wp_admin_password ]; then
-        export WORDPRESS_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
-    fi
-    
     if [ ! -f /var/www/html/wp-config.php ]; then
 
         # download

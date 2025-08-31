@@ -4,8 +4,6 @@ RUN apk update && apk add --no-cache nginx openssl bash
 
 RUN mkdir -p /etc/nginx/ssl
 
-COPY tools/nginx.sh /usr/local/bin/nginx.sh
-
-RUN chmod +x /usr/local/bin/nginx.sh
+COPY --chmod=755 tools/nginx.sh /usr/local/bin/
 
 ENTRYPOINT [ "nginx.sh"]
