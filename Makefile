@@ -5,3 +5,8 @@ up:
 
 down:
 	docker compose -f $(DOCKER_COMPOSE) down
+
+# clean:
+# 	docker
+
+re: down up

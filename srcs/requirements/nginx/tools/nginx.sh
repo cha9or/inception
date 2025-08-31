@@ -10,7 +10,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048  \
         >/dev/null 2>/dev/null
 
 # copy nginx config
-cat << EOF >> /etc/nginx/http.d/default.conf
+cat << EOF > /etc/nginx/http.d/default.conf
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
@@ -30,7 +30,7 @@ server {
     }
 
     location ~ \.php {
-        try_files \$fastcgi_scriptname =404;
+        try_files \$fastcgi_script_name =404;
         fastcgi_pass wordpress:9000;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
