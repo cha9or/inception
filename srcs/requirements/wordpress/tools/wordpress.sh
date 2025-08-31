@@ -2,7 +2,7 @@
 set -e
 
 if [ ! -e /etc/.firstrun ]; then
-    sed -i "s/listen = 127.0.0.1/listen = 9000/g"  /etc/php/8.2/fpm/pool.d/www.conf
+    sed -i 's|listen = .*|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
     touch /etc/.firstrun
 fi
 
