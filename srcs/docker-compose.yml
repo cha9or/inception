@@ -13,7 +13,7 @@ services:
       - db_root_password
       - db_password
     healthcheck:
-      test: [ "mariadb-admin", "-u", "root", "-p", "$(cat /run/secrets/db_root_password)", "ping" ]
+      test: [ "CMD-SHELL", "mariadb-admin", "-uroot", "-p$(cat /run/secrets/db_root_password)", "ping" ]
       interval: 10s
       timeout: 10s
       retries: 3

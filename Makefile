@@ -6,7 +6,10 @@ up:
 down:
 	docker compose -f $(DOCKER_COMPOSE) down
 
-# clean:
-# 	docker
+clean:
+	docker compose -f $(DOCKER_COMPOSE) down --volumes --remove-orphans
 
-re: down up
+fclean: clean
+	docker image prune -af 
+
+re: fclean up

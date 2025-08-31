@@ -34,7 +34,8 @@ if [ ! -e /etc/.firstmount ]; then
             --admin_password="$WORDPRESS_ADMIN_PASSWORD" \
             --admin_email="$WORDPRESS_ADMIN_EMAIL"
 
-        wp user create "$WORDPRESS_USER" "$WORDPRESS_EMAIL" \
+        wp user create --allow-root \
+            "$WORDPRESS_USER" "$WORDPRESS_EMAIL" \
             --user_pass="$WORDPRESS_PASSWORD" \
             --role=author
     fi
