@@ -1,9 +1,11 @@
 FROM debian:bookworm
 
-RUN apt -qqy update && apt -qqy upgrade
+RUN apt -qqy update && apt -qqy upgrade && apt -qqy install php php-mysql
 
-RUN mkdir /var/www/html/adminer/
+RUN mkdir /var/adminer/
 
-ADD https://www.adminer.org/latest.php /var/www/html/adminer/adminer.php
+ADD https://www.adminer.org/latest.php /var/adminer/index.php
 
-ENTRYPOINT [ "php", "-S", "[::]:8080", "-t", "/var/www/html/adminer/" ]
+WORKDIR /var/adminer/
+
+ENTRYPOINT [ "php", "-S", "0.0.0.0:8080" ]
