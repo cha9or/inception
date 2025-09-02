@@ -52,6 +52,24 @@ services:
       - wp_password
       - wp_admin_password
 
+  adminer:
+    container_name: adminer
+    init: true
+    restart: on-failure
+    build: requirements/bonus/adminer
+    networks:
+      - docker-network
+    depends_on:
+      - mariadb
+
+  redis:
+    container_name: redis
+    init: true
+    restart: on-failure
+    build: requirements/bonus/redis
+    networks:
+      - docker-network
+
 volumes:
   mariadb: {}
   wordpress: {}

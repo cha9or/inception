@@ -25,7 +25,12 @@ if [ ! -e /etc/.firstmount ]; then
             --dbuser="$MYSQL_USER" \
             --dbpass="$MYSQL_PASSWORD" \
             --dbname="$MYSQL_DATABASE"
- 
+    
+        # setting up redis cache
+        wp config set --allow-root WP_REDIS_HOST redis
+        wp config set --allow-root WP_REDIS_PORT 6379 --raw
+        wp config set --allow-root WP_CACHE true --raw
+    
         wp core install --allow-root \
             --skip-email \
             --url="$DOMAIN_NAME" \
