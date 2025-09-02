@@ -1,5 +1,9 @@
 FROM debian:bookworm
 
-RUN apt -qqy update && apt -qqy upgrade && apt -qqy install adminer
+RUN apt -qqy update && apt -qqy upgrade
 
-ENTRYPOINT [ "php", "-S", "[::]8080", "-t", "/usr/share/adminer/adminer/" ]
+RUN mkdir /var/www/html/adminer/
+
+ADD https://www.adminer.org/latest.php /var/www/html/adminer/adminer.php
+
+ENTRYPOINT [ "php", "-S", "[::]:8080", "-t", "/var/www/html/adminer/" ]
