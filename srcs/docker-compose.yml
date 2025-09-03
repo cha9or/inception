@@ -73,8 +73,18 @@ services:
       - docker-network
 
 volumes:
-  mariadb: {}
-  wordpress: {}
+  mariadb: 
+    driver: local
+    driver_opts:
+      device: /home/moboulan/data/mariadb
+      type: none
+      o: bind
+  wordpress:
+    driver: local
+    driver_opts:
+      device: home/moboulan/data/wordpress
+      type: none
+      o: bind
 
 networks:
   docker-network:
