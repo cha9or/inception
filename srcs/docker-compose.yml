@@ -1,7 +1,6 @@
 services:
   mariadb:
     container_name: mariadb
-    init: true
     restart: on-failure
     env_file: .env
     build: requirements/mariadb
@@ -12,16 +11,9 @@ services:
     secrets:
       - db_root_password
       - db_password
-    healthcheck:
-      test: [ "CMD-SHELL", "mariadb-admin", "-uroot", "-p$(cat /run/secrets/db_root_password)", "ping" ]
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   nginx:
     container_name: nginx
-    init: true
     restart: on-failure
     env_file: .env
     build: requirements/nginx
@@ -36,7 +28,6 @@ services:
 
   wordpress:
     container_name: wordpress
-    init: true
     restart: on-failure
     env_file: .env
     build: requirements/wordpress
@@ -53,7 +44,6 @@ services:
 
   adminer:
     container_name: adminer
-    init: true
     restart: on-failure
     build: requirements/bonus/adminer
     networks:
@@ -65,7 +55,6 @@ services:
 
   redis:
     container_name: redis
-    init: true
     restart: on-failure
     build: requirements/bonus/redis
     networks:
@@ -73,7 +62,6 @@ services:
 
   ftp:
     container_name: ftp
-    init: true
     restart: on-failure
     build: requirements/bonus/ftp
     env_file: .env
@@ -90,7 +78,6 @@ services:
 
   portainer:
     container_name: portainer
-    init: true
     restart: on-failure
     build: requirements/bonus/portainer
     ports:
@@ -100,6 +87,16 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer:/data
+
+  static-site:
+    container_name: static-site
+    init: true
+    restart: on-failure
+    build: requirements/bonus/static-site
+    ports:
+      - "80:80"
+    networks:
+      - docker-network
 
 volumes:
   mariadb: 
