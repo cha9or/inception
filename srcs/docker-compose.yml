@@ -71,6 +71,23 @@ services:
     networks:
       - docker-network
 
+  ftp:
+    container_name: ftp
+    init: true
+    restart: on-failure
+    build: requirements/bonus/ftp
+    env_file: .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - docker-network
+    ports:
+      - "21:21"
+    secrets:
+      - ftp_password
+    depends_on:
+      - wordpress
+
 volumes:
   mariadb: 
     driver: local
@@ -99,3 +116,5 @@ secrets:
     file: ../secrets/wp_password.txt
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
+  ftp_password:
+    file: ../secrets/ftp_password.txt

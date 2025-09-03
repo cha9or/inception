@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-if [ ! -e /etc/.firstrun ]; then
+if [ ! -f /etc/.firstrun ]; then
     sed -i 's|listen = .*|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
     touch /etc/.firstrun
 fi
 
-if [ ! -e /etc/.firstmount ]; then
+if [ ! -f /etc/.firstmount ]; then
 
     [ -f /run/secrets/db_password ] && export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
     [ -f /run/secrets/wp_password ] && export WORDPRESS_PASSWORD=$(cat /run/secrets/wp_password)

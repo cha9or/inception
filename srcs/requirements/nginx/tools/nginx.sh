@@ -1,7 +1,7 @@
 #!bin/bash
 set -e
 
-if [ ! -e /etc/.firstrun ]; then
+if [ ! -f /etc/.firstrun ]; then
 
 # generate ssl cetificate
 mkdir -p /etc/nginx/ssl/
