@@ -81,7 +81,7 @@ volumes:
   wordpress:
     driver: local
     driver_opts:
-      device: home/moboulan/data/wordpress
+      device: /home/moboulan/data/wordpress
       type: none
       o: bind
 

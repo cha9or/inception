@@ -26,11 +26,6 @@ if [ ! -e /etc/.firstmount ]; then
             --dbpass="$MYSQL_PASSWORD" \
             --dbname="$MYSQL_DATABASE"
     
-        # setting up redis cache
-        wp config set --allow-root WP_REDIS_HOST redis
-        wp config set --allow-root WP_REDIS_PORT 6379 --raw
-        wp config set --allow-root WP_CACHE true --raw
-    
         wp core install --allow-root \
             --skip-email \
             --url="$DOMAIN_NAME" \
@@ -38,6 +33,14 @@ if [ ! -e /etc/.firstmount ]; then
             --admin_user="$WORDPRESS_ADMIN_USER" \
             --admin_password="$WORDPRESS_ADMIN_PASSWORD" \
             --admin_email="$WORDPRESS_ADMIN_EMAIL"
+
+
+        # setting up redis cache
+		wp plugin install redis-cache --activate --allow-root
+		wp redis enable --allow-root
+        wp config set --allow-root WP_REDIS_HOST redis
+        wp config set --allow-root WP_REDIS_PORT 6379 --raw
+        wp config set --allow-root WP_CACHE true --raw
 
         wp user create --allow-root \
             "$WORDPRESS_USER" "$WORDPRESS_EMAIL" \
