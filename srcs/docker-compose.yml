@@ -32,7 +32,6 @@ services:
     networks:
       - docker-network
     depends_on:
-      - mariadb
       - wordpress
 
   wordpress:
