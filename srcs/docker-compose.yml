@@ -88,6 +88,19 @@ services:
     depends_on:
       - wordpress
 
+  portainer:
+    container_name: portainer
+    init: true
+    restart: on-failure
+    build: requirements/bonus/portainer
+    ports:
+      - "9000:9000"
+    networks:
+      - docker-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer:/data
+
 volumes:
   mariadb: 
     driver: local
@@ -99,6 +112,12 @@ volumes:
     driver: local
     driver_opts:
       device: /home/moboulan/data/wordpress
+      type: none
+      o: bind
+  portainer:
+    driver: local
+    driver_opts:
+      device: /home/moboulan/data/portainer
       type: none
       o: bind
 
