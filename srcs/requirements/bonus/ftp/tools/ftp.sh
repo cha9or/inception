@@ -6,9 +6,9 @@ if [ ! -f /etc/.firstrun ]; then
 
 	[ -f /run/secrets/ftp_password ] && export FTP_PASSWORD=$(cat /run/secrets/ftp_password)
 
-	adduser ${FTP_USER} --disabled-password --gecos ""
-	echo "${FTP_USER}:${FTP_PASSWORD}" | chpasswd
-	chown -R ${FTP_USER} /var/www/html
+	useradd -m "$FTP_USER"
+	echo "$FTP_USER:$FTP_PASSWORD" | chpasswd
+	chown -R "$FTP_USER" /var/www/html
 
 	touch /etc/.firstrun
 
