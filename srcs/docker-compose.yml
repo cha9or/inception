@@ -104,19 +104,19 @@ volumes:
   mariadb: 
     driver: local
     driver_opts:
-      device: /mnt/homes/moboulan/data/mariadb
+      device: /home/moboulan/data/mariadb
       type: none
       o: bind
   wordpress:
     driver: local
     driver_opts:
-      device: /mnt/homes/moboulan/data/wordpress
+      device: /home/moboulan/data/wordpress
       type: none
       o: bind
   portainer:
     driver: local
     driver_opts:
-      device: /mnt/homes/moboulan/data/portainer #  /home/moboulan/data/portainer 
+      device: /home/moboulan/data/portainer 
       type: none
       o: bind
 
