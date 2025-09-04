@@ -70,7 +70,9 @@ services:
     networks:
       - docker-network
     ports:
+      - "20:20"
       - "21:21"
+      - "21000-21010:21000-21010"
     secrets:
       - ftp_password
     depends_on:
@@ -102,19 +104,19 @@ volumes:
   mariadb: 
     driver: local
     driver_opts:
-      device: /home/moboulan/data/mariadb
+      device: /mnt/homes/moboulan/data/mariadb
       type: none
       o: bind
   wordpress:
     driver: local
     driver_opts:
-      device: /home/moboulan/data/wordpress
+      device: /mnt/homes/moboulan/data/wordpress
       type: none
       o: bind
   portainer:
     driver: local
     driver_opts:
-      device: /home/moboulan/data/portainer
+      device: /mnt/homes/moboulan/data/portainer #  /home/moboulan/data/portainer 
       type: none
       o: bind
 
